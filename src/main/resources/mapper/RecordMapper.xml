@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.RecordMapper">
+    <resultMap id="BaseResultMap" type="com.entity.Record">
+        <id column="ID" jdbcType="DECIMAL" property="id"/>
+        <result column="USER_ID" jdbcType="DECIMAL" property="userId"/>
+        <result column="AUCTION_ID" jdbcType="DECIMAL" property="auctionId"/>
+        <result column="AUCTION_TIME" jdbcType="TIMESTAMP" property="auctionTime"/>
+        <result column="AUCTION_PRICE" jdbcType="FLOAT" property="auctionPrice"/>
+        <association property="user" javaType="com.entity.User">
+            <id column="us_id" jdbcType="DECIMAL" property="userId"/>
+            <result column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_ID, AUCTION_ID, AUCTION_TIME, AUCTION_PRICE
+  </sql>
+    <sql id="Base2_Column_List">
+    USER_ID as us_id, USER_NAME, USER_PASSWORD, USER_CARD_NO, USER_TEL, USER_ADDRESS, USER_POST_NUMBER,
+    USER_IS_ADMIN, USER_QUESTION, USER_ANSWER
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    A.*,B.USER_ID us_id,B.USER_NAME
+    from AUCTION_RECORD A left join AUCTION_USER B
+      on A.USER_ID = B.USER_ID
+    where AUCTION_ID = #{auctionId,jdbcType=DECIMAL}
+    order by A.AUCTION_PRICE desc
+  </select>
+    <delete id="deleteByAuctionId" parameterType="java.lang.Integer">
+    delete from AUCTION_RECORD
+    where AUCTION_ID = #{id,jdbcType=DECIMAL}
+  </delete>
+    <insert id="insert" parameterType="com.entity.Record">
+    insert into AUCTION_RECORD (ID, USER_ID, AUCTION_ID, 
+      AUCTION_TIME, AUCTION_PRICE)
+    values (AUCTION_RECORD_ID.nextval, #{userId,jdbcType=DECIMAL}, #{auctionId,jdbcType=DECIMAL},
+      sysdate, #{auctionPrice,jdbcType=FLOAT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.entity.Record">
+        insert into AUCTION_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="auctionId != null">
+                AUCTION_ID,
+            </if>
+            <if test="auctionTime != null">
+                AUCTION_TIME,
+            </if>
+            <if test="auctionPrice != null">
+                AUCTION_PRICE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=DECIMAL},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="auctionId != null">
+                #{auctionId,jdbcType=DECIMAL},
+            </if>
+            <if test="auctionTime != null">
+                #{auctionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctionPrice != null">
+                #{auctionPrice,jdbcType=FLOAT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.entity.Record">
+        update AUCTION_RECORD
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=DECIMAL},
+            </if>
+            <if test="auctionId != null">
+                AUCTION_ID = #{auctionId,jdbcType=DECIMAL},
+            </if>
+            <if test="auctionTime != null">
+                AUCTION_TIME = #{auctionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctionPrice != null">
+                AUCTION_PRICE = #{auctionPrice,jdbcType=FLOAT},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.entity.Record">
+    update AUCTION_RECORD
+    set USER_ID = #{userId,jdbcType=DECIMAL},
+      AUCTION_ID = #{auctionId,jdbcType=DECIMAL},
+      AUCTION_TIME = #{auctionTime,jdbcType=TIMESTAMP},
+      AUCTION_PRICE = #{auctionPrice,jdbcType=FLOAT}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

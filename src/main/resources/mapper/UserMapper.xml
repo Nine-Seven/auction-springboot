@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.entity.User">
+    <id column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_PASSWORD" jdbcType="VARCHAR" property="userPassword" />
+    <result column="USER_CARD_NO" jdbcType="VARCHAR" property="userCardNo" />
+    <result column="USER_TEL" jdbcType="VARCHAR" property="userTel" />
+    <result column="USER_ADDRESS" jdbcType="VARCHAR" property="userAddress" />
+    <result column="USER_POST_NUMBER" jdbcType="VARCHAR" property="userPostNumber" />
+    <result column="USER_IS_ADMIN" jdbcType="DECIMAL" property="userIsAdmin" />
+    <result column="USER_QUESTION" jdbcType="VARCHAR" property="userQuestion" />
+    <result column="USER_ANSWER" jdbcType="VARCHAR" property="userAnswer" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    USER_ID, USER_NAME, USER_PASSWORD, USER_CARD_NO, USER_TEL, USER_ADDRESS, USER_POST_NUMBER, 
+    USER_IS_ADMIN, USER_QUESTION, USER_ANSWER
+  </sql>
+  <select id="login" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from AUCTION_USER
+    where USER_NAME = #{userName,jdbcType=DECIMAL} and USER_PASSWORD = #{userPassword,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from AUCTION_USER
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.entity.User">
+    insert into AUCTION_USER (USER_ID, USER_NAME, USER_PASSWORD, 
+      USER_CARD_NO, USER_TEL, USER_ADDRESS, 
+      USER_POST_NUMBER, USER_IS_ADMIN, USER_QUESTION, 
+      USER_ANSWER)
+    values (AUCTION_USER_ID.nextval, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
+      #{userCardNo,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR}, 
+      #{userPostNumber,jdbcType=VARCHAR}, 0, '无',
+      '无')
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.User">
+    insert into AUCTION_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="userPassword != null">
+        USER_PASSWORD,
+      </if>
+      <if test="userCardNo != null">
+        USER_CARD_NO,
+      </if>
+      <if test="userTel != null">
+        USER_TEL,
+      </if>
+      <if test="userAddress != null">
+        USER_ADDRESS,
+      </if>
+      <if test="userPostNumber != null">
+        USER_POST_NUMBER,
+      </if>
+      <if test="userIsAdmin != null">
+        USER_IS_ADMIN,
+      </if>
+      <if test="userQuestion != null">
+        USER_QUESTION,
+      </if>
+      <if test="userAnswer != null">
+        USER_ANSWER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userCardNo != null">
+        #{userCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null">
+        #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null">
+        #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userPostNumber != null">
+        #{userPostNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userIsAdmin != null">
+        #{userIsAdmin,jdbcType=DECIMAL},
+      </if>
+      <if test="userQuestion != null">
+        #{userQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="userAnswer != null">
+        #{userAnswer,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.entity.User">
+    update AUCTION_USER
+    <set>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userCardNo != null">
+        USER_CARD_NO = #{userCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userTel != null">
+        USER_TEL = #{userTel,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddress != null">
+        USER_ADDRESS = #{userAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userPostNumber != null">
+        USER_POST_NUMBER = #{userPostNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userIsAdmin != null">
+        USER_IS_ADMIN = #{userIsAdmin,jdbcType=DECIMAL},
+      </if>
+      <if test="userQuestion != null">
+        USER_QUESTION = #{userQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="userAnswer != null">
+        USER_ANSWER = #{userAnswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.entity.User">
+    update AUCTION_USER
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      USER_CARD_NO = #{userCardNo,jdbcType=VARCHAR},
+      USER_TEL = #{userTel,jdbcType=VARCHAR},
+      USER_ADDRESS = #{userAddress,jdbcType=VARCHAR},
+      USER_POST_NUMBER = #{userPostNumber,jdbcType=VARCHAR},
+      USER_IS_ADMIN = #{userIsAdmin,jdbcType=DECIMAL},
+      USER_QUESTION = #{userQuestion,jdbcType=VARCHAR},
+      USER_ANSWER = #{userAnswer,jdbcType=VARCHAR}
+    where USER_ID = #{userId,jdbcType=DECIMAL}
+  </update>
+</mapper>

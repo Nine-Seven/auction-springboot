@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.AuctionMapper">
+    <resultMap id="BaseResultMap" type="com.entity.Auction">
+        <id column="AUCTION_ID" jdbcType="DECIMAL" property="auctionId"/>
+        <result column="AUCTION_NAME" jdbcType="VARCHAR" property="auctionName"/>
+        <result column="AUCTION_START_PRICE" jdbcType="FLOAT" property="auctionStartPrice"/>
+        <result column="AUCTION_UPSET" jdbcType="FLOAT" property="auctionUpset"/>
+        <result column="AUCTION_START_TIME" jdbcType="TIMESTAMP" property="auctionStartTime"/>
+        <result column="AUCTION_END_TIME" jdbcType="TIMESTAMP" property="auctionEndTime"/>
+        <result column="AUCTION_PIC" jdbcType="VARCHAR" property="auctionPic"/>
+        <result column="AUCTION_DESC" jdbcType="VARCHAR" property="auctionDesc"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    AUCTION_ID, AUCTION_NAME, AUCTION_START_PRICE, AUCTION_UPSET, AUCTION_START_TIME, 
+    AUCTION_END_TIME, AUCTION_PIC, AUCTION_DESC
+  </sql>
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUCTION
+        where AUCTION_ID = #{auctionId,jdbcType=DECIMAL}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUCTION
+        <where>
+            <if test="auctionName != null and auctionName.length() != 0">
+                AUCTION_NAME like '%'||#{auctionName,jdbcType=VARCHAR}||'%'
+            </if>
+            <if test="auctionStartPrice != null">
+                and AUCTION_START_PRICE &gt;= #{auctionStartPrice,jdbcType=FLOAT}
+            </if>
+            <if test="auctionUpset != null">
+                and AUCTION_UPSET &gt;= #{auctionUpset,jdbcType=FLOAT}
+            </if>
+            <if test="auctionStartTime != null">
+                and AUCTION_START_TIME &gt;= #{auctionStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="auctionEndTime != null">
+                and AUCTION_END_TIME &lt;= #{auctionEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="auctionDesc != null and auctionDesc.length() != 0">
+                and AUCTION_DESC like '%'||#{auctionDesc,jdbcType=VARCHAR}||'%'
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from AUCTION
+    where AUCTION_ID = #{auctionId,jdbcType=DECIMAL}
+  </delete>
+    <insert id="insert" parameterType="com.entity.Auction">
+    insert into AUCTION (AUCTION_ID, AUCTION_NAME, AUCTION_START_PRICE, 
+      AUCTION_UPSET, AUCTION_START_TIME, AUCTION_END_TIME, 
+      AUCTION_PIC, AUCTION_DESC)
+    values (AUCTION_ID.nextval, #{auctionName,jdbcType=VARCHAR}, #{auctionStartPrice,jdbcType=FLOAT},
+      #{auctionUpset,jdbcType=FLOAT}, #{auctionStartTime}, #{auctionEndTime},
+      #{auctionPic,jdbcType=VARCHAR}, #{auctionDesc,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.entity.Auction">
+        insert into AUCTION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="auctionId != null">
+                AUCTION_ID,
+            </if>
+            <if test="auctionName != null">
+                AUCTION_NAME,
+            </if>
+            <if test="auctionStartPrice != null">
+                AUCTION_START_PRICE,
+            </if>
+            <if test="auctionUpset != null">
+                AUCTION_UPSET,
+            </if>
+            <if test="auctionStartTime != null">
+                AUCTION_START_TIME,
+            </if>
+            <if test="auctionEndTime != null">
+                AUCTION_END_TIME,
+            </if>
+            <if test="auctionPic != null">
+                AUCTION_PIC,
+            </if>
+            <if test="auctionDesc != null">
+                AUCTION_DESC,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="auctionId != null">
+                #{auctionId,jdbcType=DECIMAL},
+            </if>
+            <if test="auctionName != null">
+                #{auctionName,jdbcType=VARCHAR},
+            </if>
+            <if test="auctionStartPrice != null">
+                #{auctionStartPrice,jdbcType=FLOAT},
+            </if>
+            <if test="auctionUpset != null">
+                #{auctionUpset,jdbcType=FLOAT},
+            </if>
+            <if test="auctionStartTime != null">
+                #{auctionStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctionEndTime != null">
+                #{auctionEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctionPic != null">
+                #{auctionPic,jdbcType=VARCHAR},
+            </if>
+            <if test="auctionDesc != null">
+                #{auctionDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.entity.Auction">
+        update AUCTION
+        <set>
+            <if test="auctionName != null">
+                AUCTION_NAME = #{auctionName,jdbcType=VARCHAR},
+            </if>
+            <if test="auctionStartPrice != null">
+                AUCTION_START_PRICE = #{auctionStartPrice,jdbcType=FLOAT},
+            </if>
+            <if test="auctionUpset != null">
+                AUCTION_UPSET = #{auctionUpset,jdbcType=FLOAT},
+            </if>
+            <if test="auctionStartTime != null">
+                AUCTION_START_TIME = #{auctionStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctionEndTime != null">
+                AUCTION_END_TIME = #{auctionEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctionPic != null">
+                AUCTION_PIC = #{auctionPic,jdbcType=VARCHAR},
+            </if>
+            <if test="auctionDesc != null">
+                AUCTION_DESC = #{auctionDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where AUCTION_ID = #{auctionId,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.entity.Auction">
+    update AUCTION
+    set AUCTION_NAME = #{auctionName,jdbcType=VARCHAR},
+      AUCTION_START_PRICE = #{auctionStartPrice,jdbcType=FLOAT},
+      AUCTION_UPSET = #{auctionUpset,jdbcType=FLOAT},
+      AUCTION_START_TIME = #{auctionStartTime,jdbcType=TIMESTAMP},
+      AUCTION_END_TIME = #{auctionEndTime,jdbcType=TIMESTAMP},
+      AUCTION_PIC = #{auctionPic,jdbcType=VARCHAR},
+      AUCTION_DESC = #{auctionDesc,jdbcType=VARCHAR}
+    where AUCTION_ID = #{auctionId,jdbcType=DECIMAL}
+  </update>
+</mapper>
